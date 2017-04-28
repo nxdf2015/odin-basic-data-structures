@@ -28,7 +28,7 @@ attr_accessor :left,:right ,:value
         else
             @right.insert_node(value)
         end
-    elsif @value == value
+    else @value == value
       raise Exception
 
     end
@@ -39,12 +39,13 @@ attr_accessor :left,:right ,:value
     if @value.nil?
       nil
     elsif @value > value
-       @left.nil? ? nil : @left.depth_first_search(value)
+       @left.nil? ? nil : @left.depth_rec(value)
     elsif @value < value
-       @right.nil? ? nil : @right.depth_first_search(value)
+       @right.nil? ? nil : @right.depth_rec(value)
     else
       self
     end
+
  end
 
 
@@ -121,14 +122,20 @@ def depth_first_search(value)
 
 end
 
+
+
+t = Tree.new
+(1..10).to_a.each do |v| t.build_tree(v) end
+
+puts t.depth_rec(11)
+
+
+
 def create_tree values
  t = Tree.new
   values.each do |value| t.build_tree(value) end
 t
 end
-
-
-
 
 def first
   t = create_tree([1,2,3])
@@ -141,6 +148,6 @@ def second
   [t.root.value == 2 , t.root.left.value == 1, t.root.right.value == 3,t.root.left.left.nil?,t.root.left.right.nil? ].all? do |item| item end
 end
 
- 
+
 puts  first()
 puts second()
