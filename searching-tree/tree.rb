@@ -28,7 +28,7 @@ attr_accessor :left,:right ,:value
         else
             @right.insert_node(value)
         end
-    else @value == value
+    elsif @value == value
       raise Exception
 
     end
