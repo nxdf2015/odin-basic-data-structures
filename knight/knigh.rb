@@ -1,12 +1,13 @@
 class Board
 
   def initialize(size = 7)
-    init_board(7)
+    init_board(size)
   end
 
   def init_board(size,d =5000)
+  @size = size
   @board =   (0..size).map do
-      Array.new(7,d)
+      Array.new(size,d)
     end
 
   end
@@ -16,7 +17,7 @@ class Board
   tab.map do |t|
   x,y =   [t[0] + node[0],t[1] + node[1]]
 
-  [x,y] if (0...7) === x && (0...7) === y
+  [x,y] if (0...@size) === x && (0...@size) === y
 end.compact
 end
 
@@ -34,10 +35,11 @@ end
   paths =  paths.find_all do |path|
       path.length == min_length
       end
-  result(paths,min_length)
+  result(start,goal,paths,min_length)
  end
 
- def result(paths,min_length)
+ def result(start,goal,paths,min_length)
+      puts %Q[start #{start} -> goal #{goal}]
       puts %Q[ you made it in #{min_length} moves \n #{paths.length} possible path :\n\t]
       paths.each do |path|
       print   path
