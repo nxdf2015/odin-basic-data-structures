@@ -11,8 +11,6 @@ class Board
 
   end
 
-
-
  def neighboor(node)
   tab =  [1,2,-2,-1].product([1,2,-2,-1]).find_all{|t| t[0].abs != t[1].abs}
   tab.map do |t|
@@ -21,6 +19,7 @@ class Board
   [x,y] if (0...7) === x && (0...7) === y
 end.compact
 end
+
 
  def move_knight(start,goal)
    x,y = start
@@ -31,15 +30,20 @@ end
   end
 
   min_length = lengths.min
-  puts %Q[ you made it in #{min_length} moves :]
-  paths.each do |path|
-  begin
-    puts
-    puts %Q[ \t #{path.to_s}]
-    puts
-  end  if path.length == min_length
-  end
+
+  paths =  paths.find_all do |path|
+      path.length == min_length
+      end
+  result(paths,min_length)
  end
+
+ def result(paths,min_length)
+      puts %Q[ you made it in #{min_length} moves \n #{paths.length} possible path :\n\t]
+      paths.each do |path|
+      print   path
+      puts
+    end
+end
 
 
  def move_knight_rec(start,goal,path=[start])
@@ -67,8 +71,6 @@ end
 end
 
 
-
-
 b = Board.new
 
- b.move_knight([3,3],[6,4])
+ b.move_knight([3,3],[4,3])
