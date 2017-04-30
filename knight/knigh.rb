@@ -1,6 +1,6 @@
 class Board
 
-  def initialize(size = 7)
+  def initialize(size = 8)
     init_board(size)
   end
 
@@ -30,6 +30,8 @@ end
     path.length
   end
 
+  puts "number paths #{paths.length}"
+
   min_length = lengths.min
 
   paths =  paths.find_all do |path|
@@ -53,18 +55,17 @@ end
      x_start,y_start = start
      for node in neighboor(start) do
        x_node,y_node = node
-       if  @board[x_start][y_start] + 1  <   @board[x_node][y_node]
+       new_path = path[0..-1]
+       new_path << node
 
-         new_path = path[0..-1]
-         new_path << node
+       if node[0] == goal[0] && node[1] == goal[1]
+          paths << new_path
 
-         if node[0] == goal[0] && node[1] == goal[1]
-            paths << new_path
-         else
-           @board[x_node][y_node] =  @board[x_start][y_start] + 1
-           paths += move_knight_rec(node,goal,new_path)
-         end
+       elsif  @board[x_start][y_start] + 1  <=   @board[x_node][y_node]
+         @board[x_node][y_node] =  @board[x_start][y_start] + 1
+         paths += move_knight_rec(node,goal,new_path)
        end
+
      end
 return paths
 end
