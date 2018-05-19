@@ -1,79 +1,56 @@
-class Board
+def knight_moves(position_start,position_end)
+    
+     
+    
+    move = [-2,-1,1,2,].product([-2,-1,1,2]).select do |x,y| x.abs != y.abs end
+    
+     
+    
+        board = (0..7).map do 
+            [Array.new(8,nil)]
+        end
+    
+         
+        queue= []
+        queue.push(position_start)
+        notFind = true
+        
+    
+        while !queue.empty? &&  notFind
+            
+            position = queue.shift
+            
+            move.
+            collect do |x,y| 
+                [position[0] + x , position[1] + y]
+            end.
+            find_all do |x,y| 
+                (0..7) === x && (0..7) === y 
+            end.
+             each do |x,y|
+                if board[x][y].nil?                     
+                    board[x][y] = position                      
+                    notFind = !(x == position_end[0] && y == position_end[1])
+                    queue.push([x,y])
+                end            
+            end           
+        end
+    
+        path = []
+        position = position_end
+        path  << position_end
 
-  def initialize(size = 8)
-    init_board(size)
-  end
-
-  def init_board(size,d =5000)
-  @size = size
-  @board =   (0..size).map do
-      Array.new(size,d)
+        while position != position_start             
+            position = board[position[0]][position[1]]
+            path.unshift(position)
+        end
+        
+        path
     end
+    
+            
+         
+    p knight_moves([0,0],[4,4])
+    
 
-  end
-
- def neighboor(node)
-  tab =  [1,2,-2,-1].product([1,2,-2,-1]).find_all{|t| t[0].abs != t[1].abs}
-  tab.map do |t|
-  x,y =   [t[0] + node[0],t[1] + node[1]]
-
-  [x,y] if (0...@size) === x && (0...@size) === y
-end.compact
-end
-
-
- def move_knight(start,goal)
-   x,y = start
-   @board[x][y] = 0
-  paths =  move_knight_rec(start,goal)
-   lengths = paths.map do |path|
-    path.length
-  end
-
-  puts "number paths #{paths.length}"
-
-  min_length = lengths.min
-
-  paths =  paths.find_all do |path|
-      path.length == min_length
-      end
-  result(start,goal,paths,min_length)
- end
-
- def result(start,goal,paths,min_length)
-      puts %Q[start #{start} -> goal #{goal}]
-      puts %Q[ you made it in #{min_length} moves \n #{paths.length} possible path :\n\t]
-      paths.each do |path|
-      print   path
-      puts
-    end
-end
-
-
- def move_knight_rec(start,goal,path=[start])
-     paths = []
-     x_start,y_start = start
-     for node in neighboor(start) do
-       x_node,y_node = node
-       new_path = path[0..-1]
-       new_path << node
-
-       if node[0] == goal[0] && node[1] == goal[1]
-          paths << new_path
-
-       elsif  @board[x_start][y_start] + 1  <=   @board[x_node][y_node]
-         @board[x_node][y_node] =  @board[x_start][y_start] + 1
-         paths += move_knight_rec(node,goal,new_path)
-       end
-
-     end
-return paths
-end
-
-
-end
-
-
-b = Board.new
-
- b.move_knight([3,3],[4,3])
+   
